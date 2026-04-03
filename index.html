@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prepositions Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-50: #E1F5EE;
+      --green-100: #9FE1CB;
+      --green-400: #1D9E75;
+      --green-600: #0F6E56;
+      --green-800: #085041;
+      --red-50: #FCEBEB;
+      --red-100: #F7C1C1;
+      --red-400: #E24B4A;
+      --red-800: #501313;
+      --amber-50: #FAEEDA;
+      --amber-400: #BA7517;
+      --amber-800: #412402;
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --text-primary: #1A1814;
+      --text-secondary: #6B6760;
+      --text-muted: #9E9B95;
+      --border: rgba(0,0,0,0.1);
+      --border-strong: rgba(0,0,0,0.18);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* Subtle dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 660px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── INTRO SCREEN ── */
+    .intro-screen {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .logo-mark {
+      width: 52px;
+      height: 52px;
+      background: var(--green-400);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-mark svg { width: 28px; height: 28px; fill: white; }
+
+    .intro-screen h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.6rem;
+    }
+
+    .intro-screen h1 em {
+      font-style: italic;
+      color: var(--green-400);
+    }
+
+    .intro-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .count-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .count-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      user-select: none;
+    }
+
+    .count-card:hover {
+      border-color: var(--green-400);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(29,158,117,0.12);
+    }
+
+    .count-card.selected {
+      border-color: var(--green-400);
+      background: var(--green-50);
+      box-shadow: 0 0 0 3px rgba(29,158,117,0.15);
+    }
+
+    .count-num {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .count-card.selected .count-num { color: var(--green-600); }
+
+    .count-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .count-card.selected .count-tag { color: var(--green-400); }
+
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+    }
+
+    .start-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--green-400);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.2px;
+    }
+
+    .start-btn:hover { background: var(--green-600); transform: translateY(-1px); }
+    .start-btn:active { transform: scale(0.99); }
+    .start-btn:disabled { background: var(--text-muted); cursor: not-allowed; transform: none; }
+
+    /* ── QUIZ SCREEN ── */
+    .quiz-screen { display: none; animation: fadeUp 0.4s ease both; }
+
+    .quiz-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .quiz-topbar-left { font-size: 13px; color: var(--text-secondary); }
+    .quiz-topbar-left strong { color: var(--text-primary); font-weight: 500; }
+
+    .score-badge {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 99px;
+      background: var(--green-50);
+      color: var(--green-600);
+      border: 1px solid var(--green-100);
+    }
+
+    .progress-track {
+      height: 5px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--green-400);
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .question-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .cat-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--amber-50);
+      color: var(--amber-400);
+      border: 1px solid rgba(186,117,23,0.2);
+      margin-bottom: 14px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .question-text {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(17px, 3vw, 20px);
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .blank {
+      display: inline-block;
+      min-width: 60px;
+      border-bottom: 2.5px solid var(--green-400);
+      color: var(--green-600);
+      font-weight: 500;
+      padding: 0 4px;
+      text-align: center;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      background: #FAFAF8;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      line-height: 1.4;
+    }
+
+    .opt-btn:hover:not(:disabled) {
+      background: var(--green-50);
+      border-color: var(--green-400);
+      transform: translateY(-1px);
+    }
+
+    .opt-btn.correct {
+      background: var(--green-50);
+      border-color: var(--green-400);
+      color: var(--green-800);
+    }
+
+    .opt-btn.wrong {
+      background: var(--red-50);
+      border-color: var(--red-400);
+      color: var(--red-800);
+    }
+
+    .opt-btn:disabled { cursor: default; transform: none; }
+
+    .feedback-box {
+      margin-top: 1rem;
+      padding: 13px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      line-height: 1.55;
+      display: none;
+    }
+
+    .feedback-box.correct {
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      color: var(--green-800);
+      display: block;
+    }
+
+    .feedback-box.wrong {
+      background: var(--red-50);
+      border: 1px solid var(--red-100);
+      color: var(--red-800);
+      display: block;
+    }
+
+    .next-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--text-primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .next-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .next-btn:active { transform: scale(0.99); }
+
+    /* ── RESULT SCREEN ── */
+    .result-screen {
+      display: none;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .result-hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .score-ring {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--green-50);
+      border: 3px solid var(--green-400);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .score-big {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--green-600);
+      line-height: 1;
+    }
+
+    .score-denom {
+      font-size: 12px;
+      color: var(--green-400);
+      margin-top: 2px;
+    }
+
+    .result-title {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+
+    .result-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-box {
+      background: #F7F5F0;
+      border-radius: var(--radius-sm);
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .stat-n {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .stat-l {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .result-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .btn-outline {
+      padding: 13px;
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-outline:hover { background: var(--bg); }
+
+    .btn-primary {
+      padding: 13px;
+      background: var(--green-400);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--green-600); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .count-grid { grid-template-columns: repeat(2, 1fr); }
+      .options-grid { grid-template-columns: 1fr; }
+      .result-actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- INTRO -->
+  <div class="intro-screen" id="intro">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+    </div>
+    <h1>Master <em>prepositions</em><br>one question at a time.</h1>
+    <p class="intro-desc">Place, time, direction, manner, cause — this quiz covers all preposition types with instant explanations after every answer.</p>
+
+    <div class="section-label">Choose number of questions</div>
+    <div class="count-grid" id="count-grid">
+      <div class="count-card" data-n="15" onclick="selectCount(15)">
+        <div class="count-num">15</div>
+        <div class="count-tag">Quick</div>
+      </div>
+      <div class="count-card" data-n="30" onclick="selectCount(30)">
+        <div class="count-num">30</div>
+        <div class="count-tag">Standard</div>
+      </div>
+      <div class="count-card" data-n="50" onclick="selectCount(50)">
+        <div class="count-num">50</div>
+        <div class="count-tag">Deep dive</div>
+      </div>
+      <div class="count-card" data-n="150" onclick="selectCount(150)">
+        <div class="count-num">150</div>
+        <div class="count-tag">Full bank</div>
+      </div>
+    </div>
+
+    <div class="section-label">Topics covered</div>
+    <div class="tags-row">
+      <span class="tag">Place</span>
+      <span class="tag">Time</span>
+      <span class="tag">Direction</span>
+      <span class="tag">Manner</span>
+      <span class="tag">Cause / Reason</span>
+      <span class="tag">Agent</span>
+      <span class="tag">Instrument</span>
+      <span class="tag">Comparison</span>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startQuiz()" disabled>Select a number of questions to begin</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-screen" id="quiz">
+    <div class="quiz-topbar">
+      <div class="quiz-topbar-left">
+        Question <strong id="q-cur">1</strong> of <strong id="q-tot">15</strong>
+      </div>
+      <div class="score-badge" id="score-badge">Score: 0</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+    <div class="question-card">
+      <div class="cat-badge" id="cat-badge">Place</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options-grid" id="options-grid"></div>
+      <div class="feedback-box" id="feedback-box"></div>
+    </div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-screen" id="result">
+    <div class="result-hero">
+      <div class="score-ring">
+        <div class="score-big" id="r-score">0</div>
+        <div class="score-denom" id="r-denom">/ 15</div>
+      </div>
+      <div class="result-title" id="r-title">Well done!</div>
+      <div class="result-sub" id="r-sub"></div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-n" id="r-correct">0</div><div class="stat-l">Correct</div></div>
+        <div class="stat-box"><div class="stat-n" id="r-wrong">0</div><div class="stat-l">Wrong</div></div>
+        <div class="stat-box"><div class="stat-n" id="r-pct">0%</div><div class="stat-l">Accuracy</div></div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="btn-outline" onclick="goHome()">← Change settings</button>
+      <button class="btn-primary" onclick="restartQuiz()">Try again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── QUESTION BANK (150 questions) ──────────────────────────────────────────
+const ALL_QUESTIONS = [
+  // PLACE (30)
+  {cat:"Place",text:"The keys are ___ the table.",opts:["on","at","since","during"],ans:"on",exp:"'On' is used for surfaces — the keys rest on top of the table."},
+  {cat:"Place",text:"She lives ___ a small village ___ the mountains.",opts:["in / in","at / on","on / at","in / on"],ans:"in / in",exp:"'In' is used for enclosed spaces and areas — she lives inside a village that sits within the mountains."},
+  {cat:"Place",text:"The post office is ___ the bank and the pharmacy.",opts:["among","between","around","beside"],ans:"between",exp:"'Between' is used for position in the middle of exactly two things."},
+  {cat:"Place",text:"There are many fish ___ the river.",opts:["in","on","at","by"],ans:"in",exp:"'In' is used for bodies of water that surround something — fish are inside the river."},
+  {cat:"Place",text:"He was standing ___ the corner of the street.",opts:["in","on","at","by"],ans:"at",exp:"'At' is used for specific points or locations — at the corner, at the bus stop."},
+  {cat:"Place",text:"The painting is hanging ___ the wall.",opts:["on","in","at","over"],ans:"on",exp:"'On' describes something attached to or resting against a surface like a wall."},
+  {cat:"Place",text:"The children are playing ___ the park.",opts:["in","on","at","into"],ans:"in",exp:"'In' is used for enclosed or defined areas like parks."},
+  {cat:"Place",text:"She sat ___ the front row.",opts:["in","on","at","into"],ans:"in",exp:"'In the front row' — rows are treated as enclosed positions."},
+  {cat:"Place",text:"The bird is perched ___ the branch.",opts:["on","in","at","over"],ans:"on",exp:"'On' describes resting on a surface or object."},
+  {cat:"Place",text:"He lives ___ 42 Baker Street.",opts:["in","on","at","by"],ans:"at",exp:"'At' is used for specific addresses and exact locations."},
+  {cat:"Place",text:"There was a spider ___ the ceiling.",opts:["on","in","at","above"],ans:"on",exp:"'On' is correct — the spider clings to the surface of the ceiling."},
+  {cat:"Place",text:"She found the letter ___ the envelope.",opts:["inside","in","into","within"],ans:"in",exp:"'In' is the natural preposition for something contained within an object like an envelope."},
+  {cat:"Place",text:"The dog hid ___ the bed.",opts:["under","below","beneath","down"],ans:"under",exp:"'Under' is the most natural choice for being directly beneath a piece of furniture."},
+  {cat:"Place",text:"Put the box ___ the shelf.",opts:["on","in","at","over"],ans:"on",exp:"'On the shelf' — something rests on a flat surface."},
+  {cat:"Place",text:"The temperature is ___ zero today.",opts:["below","under","beneath","down"],ans:"below",exp:"'Below zero' is the standard phrase for temperatures under 0°."},
+  {cat:"Place",text:"The village is ___ the hill.",opts:["at the top of","on top of","over","above"],ans:"at the top of",exp:"'At the top of the hill' indicates a specific point or summit."},
+  {cat:"Place",text:"We live ___ the third floor.",opts:["on","in","at","upon"],ans:"on",exp:"'On the third floor' — floors of a building use 'on'."},
+  {cat:"Place",text:"He stood ___ the door waiting.",opts:["at","in","on","by"],ans:"at",exp:"'At the door' indicates a specific point right next to the entrance."},
+  {cat:"Place",text:"There's a café ___ the corner.",opts:["on","at","in","by"],ans:"on",exp:"'On the corner' is the standard phrase for a location at an intersection."},
+  {cat:"Place",text:"The cat jumped ___ the sofa.",opts:["onto","into","on","in"],ans:"onto",exp:"'Onto' shows movement to a surface — the cat moved and landed on the sofa."},
+  {cat:"Place",text:"She poured the water ___ the glass.",opts:["into","in","onto","to"],ans:"into",exp:"'Into' shows movement entering an enclosed container."},
+  {cat:"Place",text:"He looked ___ the window.",opts:["through","across","over","by"],ans:"through",exp:"'Through the window' — light or sight passes from one side to the other."},
+  {cat:"Place",text:"The school is ___ the hospital.",opts:["opposite","across","facing","next to"],ans:"opposite",exp:"'Opposite' means directly facing the other building."},
+  {cat:"Place",text:"They were sitting ___ a circle.",opts:["in","on","at","around"],ans:"in",exp:"'In a circle' — people arranged in a circular formation."},
+  {cat:"Place",text:"The treasure is hidden ___ the old oak tree.",opts:["beneath","under","below","underneath"],ans:"beneath",exp:"All options are possible but 'beneath' is most literary; 'under' is most common in daily speech."},
+  {cat:"Place",text:"He is waiting ___ the bus stop.",opts:["at","on","in","by"],ans:"at",exp:"'At' is used for specific points like bus stops, airports, and stations."},
+  {cat:"Place",text:"The book is ___ the shelf, ___ the dictionary.",opts:["on / next to","in / beside","on / between","at / by"],ans:"on / next to",exp:"The book rests 'on' the shelf and is positioned 'next to' the dictionary."},
+  {cat:"Place",text:"She whispered ___ his ear.",opts:["in","into","at","to"],ans:"in",exp:"'In someone's ear' is the fixed expression for whispering."},
+  {cat:"Place",text:"The butterfly landed ___ her hand.",opts:["on","in","at","onto"],ans:"on",exp:"'On her hand' — the butterfly rests on the surface of her hand."},
+  {cat:"Place",text:"The city is located ___ the coast.",opts:["on","at","by","along"],ans:"on",exp:"'On the coast' is the standard phrase for a city's geographical position next to the sea."},
+
+  // TIME (30)
+  {cat:"Time",text:"The meeting starts ___ 3 o'clock.",opts:["in","on","at","by"],ans:"at",exp:"'At' is used for specific times of day."},
+  {cat:"Time",text:"I was born ___ a cold Tuesday morning.",opts:["in","on","at","during"],ans:"on",exp:"'On' is used for days and specific dates."},
+  {cat:"Time",text:"He has been studying English ___ three years.",opts:["since","for","during","until"],ans:"for",exp:"'For' expresses a duration of time."},
+  {cat:"Time",text:"I haven't seen her ___ last summer.",opts:["for","since","during","by"],ans:"since",exp:"'Since' refers to a specific point in time when something started."},
+  {cat:"Time",text:"Please submit your application ___ Friday.",opts:["until","since","by","during"],ans:"by",exp:"'By' sets a deadline — no later than Friday."},
+  {cat:"Time",text:"We'll finish the project ___ the end of the month.",opts:["by","until","at","in"],ans:"by",exp:"'By the end' means before or at that point — it sets a deadline."},
+  {cat:"Time",text:"She learned French ___ six months.",opts:["in","for","during","within"],ans:"in",exp:"'In six months' means it took that amount of time to complete — it focuses on the result."},
+  {cat:"Time",text:"The shop is open ___ Monday ___ Saturday.",opts:["from / to","since / until","between / and","from / until"],ans:"from / to",exp:"'From…to' is the standard way to express a range of days or times."},
+  {cat:"Time",text:"He fell asleep ___ the lecture.",opts:["during","while","in","at"],ans:"during",exp:"'During' is used with a noun phrase to describe something happening within that period."},
+  {cat:"Time",text:"The flowers bloom ___ spring.",opts:["in","on","at","during"],ans:"in",exp:"'In' is used with seasons — in spring, in winter, in summer."},
+  {cat:"Time",text:"I'll be ready ___ a moment.",opts:["in","at","by","within"],ans:"in",exp:"'In a moment' means after a very short time."},
+  {cat:"Time",text:"The train leaves ___ noon.",opts:["in","on","at","by"],ans:"at",exp:"'At noon' — 'at' is used for specific times including noon, midnight, dawn."},
+  {cat:"Time",text:"She has worked here ___ 2018.",opts:["since","for","from","during"],ans:"since",exp:"'Since 2018' refers to a specific past year from which the action has continued."},
+  {cat:"Time",text:"The concert starts ___ the evening.",opts:["in","on","at","during"],ans:"in",exp:"'In the evening' — parts of the day use 'in' except 'at night'."},
+  {cat:"Time",text:"We visited Rome ___ our honeymoon.",opts:["during","in","at","on"],ans:"during",exp:"'During our honeymoon' — 'during' is used with periods or events."},
+  {cat:"Time",text:"The deadline is ___ the 15th of November.",opts:["on","in","at","by"],ans:"on",exp:"'On the 15th' — exact calendar dates use 'on'."},
+  {cat:"Time",text:"He called me ___ midnight.",opts:["at","in","on","during"],ans:"at",exp:"'At midnight' — 'at' is used for exact moments including midnight, noon, dawn."},
+  {cat:"Time",text:"She will return ___ an hour.",opts:["in","within","after","by"],ans:"in",exp:"'In an hour' means after one hour has passed."},
+  {cat:"Time",text:"The museum is closed ___ Sundays.",opts:["on","in","at","during"],ans:"on",exp:"'On Sundays' — days of the week always use 'on'."},
+  {cat:"Time",text:"We should be there ___ 6 and 7 pm.",opts:["between","from","since","during"],ans:"between",exp:"'Between 6 and 7' specifies a time range with exact endpoints."},
+  {cat:"Time",text:"I'll wait ___ you come back.",opts:["until","by","for","since"],ans:"until",exp:"'Until' means up to the point in time when something happens."},
+  {cat:"Time",text:"___ the end of the day, everything was resolved.",opts:["By","At","In","On"],ans:"By",exp:"'By the end of the day' means before or at that point — a deadline framing."},
+  {cat:"Time",text:"He was born ___ the 1980s.",opts:["in","on","during","at"],ans:"in",exp:"'In the 1980s' — decades use 'in'."},
+  {cat:"Time",text:"The negotiations lasted ___ three weeks.",opts:["for","during","over","in"],ans:"for",exp:"'For three weeks' expresses the duration the negotiations continued."},
+  {cat:"Time",text:"She finished the exam ___ time.",opts:["on","in","at","by"],ans:"on",exp:"'On time' is a fixed phrase meaning punctually, not late."},
+  {cat:"Time",text:"I'll give you the answer ___ tomorrow.",opts:["by","until","on","in"],ans:"by",exp:"'By tomorrow' means no later than tomorrow — a deadline."},
+  {cat:"Time",text:"The baby cries ___ night.",opts:["at","in","on","during"],ans:"at",exp:"'At night' is a fixed expression — night is the one part of the day that uses 'at'."},
+  {cat:"Time",text:"The report was submitted ___ the deadline.",opts:["before","by","until","prior"],ans:"before",exp:"'Before the deadline' means earlier than the due date. 'By' also works — it means no later than."},
+  {cat:"Time",text:"They got married ___ Christmas Day.",opts:["on","at","in","during"],ans:"on",exp:"'On Christmas Day' — a specific calendar day uses 'on'."},
+  {cat:"Time",text:"She practises piano ___ an hour every day.",opts:["for","during","in","over"],ans:"for",exp:"'For an hour' expresses the duration of the activity."},
+
+  // DIRECTION & MOVEMENT (20)
+  {cat:"Direction",text:"The cat jumped ___ the wall.",opts:["over","across","into","along"],ans:"over",exp:"'Over' implies movement from one side to the other by going above the wall."},
+  {cat:"Direction",text:"We drove ___ the tunnel.",opts:["over","through","across","along"],ans:"through",exp:"'Through' is used when moving inside something from one end to the other."},
+  {cat:"Direction",text:"She walked ___ the bridge.",opts:["across","through","over","along"],ans:"across",exp:"'Across' implies movement from one side to the other, typically on a flat surface like a bridge."},
+  {cat:"Direction",text:"He ran ___ the hill.",opts:["up","over","across","on"],ans:"up",exp:"'Up the hill' indicates movement in an upward direction along the hill."},
+  {cat:"Direction",text:"The river flows ___ the valley.",opts:["through","across","along","over"],ans:"through",exp:"'Through the valley' — the river moves inside the valley from one end to the other."},
+  {cat:"Direction",text:"She swam ___ the lake.",opts:["across","through","over","along"],ans:"across",exp:"'Across the lake' — moving from one shore to the opposite shore."},
+  {cat:"Direction",text:"He climbed ___ the ladder.",opts:["up","on","over","along"],ans:"up",exp:"'Up the ladder' — climbing in an upward direction."},
+  {cat:"Direction",text:"The plane flew ___ the clouds.",opts:["above","through","over","across"],ans:"through",exp:"'Through the clouds' — the plane passed inside and out of the cloud layer."},
+  {cat:"Direction",text:"They walked ___ the park to get home.",opts:["through","across","over","along"],ans:"through",exp:"'Through the park' — they entered and exited the park as a passage."},
+  {cat:"Direction",text:"The ball rolled ___ the table and fell.",opts:["off","from","out of","down"],ans:"off",exp:"'Off the table' indicates the ball moved away from the surface and fell."},
+  {cat:"Direction",text:"She jumped ___ the swimming pool.",opts:["into","in","to","onto"],ans:"into",exp:"'Into' shows movement entering an enclosed or contained space."},
+  {cat:"Direction",text:"He walked ___ the street, looking at the shops.",opts:["along","across","through","over"],ans:"along",exp:"'Along the street' means moving in the same direction as the street, following its length."},
+  {cat:"Direction",text:"The fox crept ___ the hedge.",opts:["through","across","along","over"],ans:"through",exp:"'Through the hedge' — the fox pushed its way inside and out the other side."},
+  {cat:"Direction",text:"She drove ___ the roundabout.",opts:["around","through","across","over"],ans:"around",exp:"'Around the roundabout' — moving in a circular path."},
+  {cat:"Direction",text:"He peeked ___ the curtain.",opts:["behind","through","over","past"],ans:"behind",exp:"'Behind the curtain' means looking from the concealed side."},
+  {cat:"Direction",text:"The water dripped ___ the ceiling.",opts:["through","from","off","down"],ans:"from",exp:"'From the ceiling' indicates the starting point of the drip."},
+  {cat:"Direction",text:"She leaned ___ the window to wave goodbye.",opts:["out of","from","through","outside"],ans:"out of",exp:"'Out of the window' — she extended herself from inside to the outside through the window."},
+  {cat:"Direction",text:"He fell ___ the stairs.",opts:["down","off","from","along"],ans:"down",exp:"'Down the stairs' — falling in a downward direction along the staircase."},
+  {cat:"Direction",text:"The road goes ___ the forest for miles.",opts:["through","across","along","over"],ans:"through",exp:"'Through the forest' — the road passes inside the forest."},
+  {cat:"Direction",text:"She came ___ behind and surprised us.",opts:["from","out of","around","through"],ans:"from",exp:"'From behind' indicates the origin point of her approach."},
+
+  // MANNER & INSTRUMENT (15)
+  {cat:"Manner",text:"He solved the puzzle ___ great difficulty.",opts:["with","by","in","at"],ans:"with",exp:"'With great difficulty' describes the manner — accompanied by difficulty."},
+  {cat:"Manner",text:"She was trembling ___ fear.",opts:["because","with","from","about"],ans:"with",exp:"'With' expresses a strong emotion causing a physical reaction."},
+  {cat:"Manner",text:"He paid for the meal ___ cash.",opts:["with","by","in","using"],ans:"with",exp:"'With cash' — using a specific instrument or means of payment."},
+  {cat:"Manner",text:"She spoke to the audience ___ a microphone.",opts:["through","with","by","via"],ans:"through",exp:"'Through a microphone' — the microphone is the medium through which her voice travelled."},
+  {cat:"Manner",text:"He wrote the letter ___ hand.",opts:["by","with","in","using"],ans:"by",exp:"'By hand' is a fixed expression meaning manually, not by machine."},
+  {cat:"Manner",text:"She sent the file ___ email.",opts:["by","through","via","with"],ans:"by",exp:"'By email' is the standard phrase. 'Via email' is also correct."},
+  {cat:"Manner",text:"He repaired the engine ___ a wrench.",opts:["with","by","using","through"],ans:"with",exp:"'With a wrench' — using a tool is expressed with 'with'."},
+  {cat:"Manner",text:"She spoke ___ a whisper.",opts:["in","with","at","by"],ans:"in",exp:"'In a whisper' — tone or volume of voice uses 'in'."},
+  {cat:"Manner",text:"He greeted me ___ a smile.",opts:["with","in","by","at"],ans:"with",exp:"'With a smile' describes the accompanying gesture or manner."},
+  {cat:"Manner",text:"They communicated ___ sign language.",opts:["in","through","by","with"],ans:"in",exp:"'In sign language' — languages and modes of expression use 'in'."},
+  {cat:"Manner",text:"She travels ___ first class.",opts:["in","by","on","with"],ans:"in",exp:"'In first class' — class of travel uses 'in'."},
+  {cat:"Manner",text:"He typed the report ___ his laptop.",opts:["on","with","by","in"],ans:"on",exp:"'On his laptop' — digital devices use 'on'."},
+  {cat:"Manner",text:"She completed the race ___ record time.",opts:["in","with","at","within"],ans:"in",exp:"'In record time' — a fixed expression meaning faster than ever before."},
+  {cat:"Manner",text:"He spoke ___ a calm and measured tone.",opts:["in","with","at","by"],ans:"in",exp:"'In a tone' — manner of speaking uses 'in'."},
+  {cat:"Manner",text:"The news spread ___ word of mouth.",opts:["by","through","via","with"],ans:"by",exp:"'By word of mouth' is a fixed idiom meaning information passed verbally between people."},
+
+  // CAUSE & REASON (10)
+  {cat:"Cause",text:"She was late ___ the traffic.",opts:["because of","due to","owing to","because"],ans:"because of",exp:"'Because of' introduces a noun phrase as the cause. 'Due to' and 'owing to' are also correct here."},
+  {cat:"Cause",text:"The match was cancelled ___ rain.",opts:["due to","because","owing to","because of"],ans:"due to",exp:"'Due to' (or 'because of') introduces a noun as a cause."},
+  {cat:"Cause",text:"He was rewarded ___ his bravery.",opts:["for","because of","due to","with"],ans:"for",exp:"'Rewarded for' — 'for' introduces the reason someone receives a reward or punishment."},
+  {cat:"Cause",text:"She cried ___ joy when she heard the news.",opts:["with","from","because of","out of"],ans:"with",exp:"'With joy' — an emotion causing a physical reaction uses 'with' or 'out of'."},
+  {cat:"Cause",text:"He was fined ___ speeding.",opts:["for","because of","due to","about"],ans:"for",exp:"'Fined for' — the reason for a penalty uses 'for'."},
+  {cat:"Cause",text:"The project was delayed ___ lack of funding.",opts:["due to","because","for","owing"],ans:"due to",exp:"'Due to' or 'because of' introduce noun phrases as causes."},
+  {cat:"Cause",text:"She left the party early ___ a headache.",opts:["because of","due to","for","with"],ans:"because of",exp:"'Because of a headache' — 'because of' introduces the reason for her action."},
+  {cat:"Cause",text:"He died ___ old age.",opts:["of","from","due to","because of"],ans:"of",exp:"'Died of old age' — causes of death use 'of' or 'from'."},
+  {cat:"Cause",text:"She fainted ___ the heat.",opts:["from","because of","due to","with"],ans:"from",exp:"'Fainted from the heat' — physical reactions to environment often use 'from'."},
+  {cat:"Cause",text:"The plant died ___ lack of water.",opts:["from","due to","because of","for"],ans:"from",exp:"'Died from' — physical causes of death or failure use 'from' or 'due to'."},
+
+  // COMPARISON & RELATION (10)
+  {cat:"Comparison",text:"She is taller ___ her brother.",opts:["than","then","from","as"],ans:"than",exp:"'Than' is used in comparisons — taller, shorter, better than."},
+  {cat:"Comparison",text:"This coffee is not as strong ___ yesterday's.",opts:["as","than","like","from"],ans:"as",exp:"'As…as' is used in equal comparisons — as strong as."},
+  {cat:"Comparison",text:"He looks exactly ___ his father.",opts:["like","as","than","similar"],ans:"like",exp:"'Like' introduces a comparison with a noun — looks like his father."},
+  {cat:"Comparison",text:"She treats her employees ___ equals.",opts:["as","like","for","with"],ans:"as",exp:"'As equals' — 'as' is used when describing a role or function."},
+  {cat:"Comparison",text:"He acted ___ a true professional.",opts:["like","as","than","with"],ans:"like",exp:"'Like a true professional' — 'like' compares to a type of person."},
+  {cat:"Comparison",text:"The results are different ___ what we expected.",opts:["from","than","to","as"],ans:"from",exp:"'Different from' is the standard British English form."},
+  {cat:"Comparison",text:"She is interested ___ classical music.",opts:["in","about","with","at"],ans:"in",exp:"'Interested in' is a fixed collocation — the preposition is always 'in'."},
+  {cat:"Comparison",text:"He is good ___ mathematics.",opts:["at","in","with","for"],ans:"at",exp:"'Good at' is the fixed expression — at a skill or subject."},
+  {cat:"Comparison",text:"She is afraid ___ spiders.",opts:["of","from","about","with"],ans:"of",exp:"'Afraid of' — emotions followed by their cause use 'of'."},
+  {cat:"Comparison",text:"He is proud ___ his achievements.",opts:["of","about","for","with"],ans:"of",exp:"'Proud of' — 'of' is the standard preposition after 'proud'."},
+
+  // AGENT (5)
+  {cat:"Agent",text:"The novel was written ___ Gabriel García Márquez.",opts:["by","from","with","through"],ans:"by",exp:"In passive sentences, 'by' introduces the agent — the person who performed the action."},
+  {cat:"Agent",text:"The bridge was designed ___ a famous architect.",opts:["by","from","with","through"],ans:"by",exp:"'By a famous architect' — passive voice agent."},
+  {cat:"Agent",text:"The painting was sold ___ auction.",opts:["at","by","in","on"],ans:"at",exp:"'At auction' — fixed expression for the method of sale."},
+  {cat:"Agent",text:"The parcel was delivered ___ a courier.",opts:["by","from","through","with"],ans:"by",exp:"'By a courier' — the agent in a passive construction."},
+  {cat:"Agent",text:"The law was passed ___ parliament.",opts:["by","through","in","from"],ans:"by",exp:"'Passed by parliament' — the agent responsible for the action."},
+
+  // MIXED / IDIOMATIC (30)
+  {cat:"Idiomatic",text:"She is ___ a diet.",opts:["on","in","at","with"],ans:"on",exp:"'On a diet' is a fixed idiom — also: on strike, on holiday, on a trip."},
+  {cat:"Idiomatic",text:"He is ___ work right now.",opts:["at","in","on","by"],ans:"at",exp:"'At work' — fixed expression meaning currently working or located at the workplace."},
+  {cat:"Idiomatic",text:"They fell ___ love at first sight.",opts:["in","into","with","for"],ans:"in",exp:"'In love' — the fixed phrase. Note: you 'fall in love' or 'fall into love' informally."},
+  {cat:"Idiomatic",text:"She is ___ charge of the project.",opts:["in","on","at","by"],ans:"in",exp:"'In charge of' is the fixed phrase meaning responsible for something."},
+  {cat:"Idiomatic",text:"He is ___ a hurry.",opts:["in","on","at","with"],ans:"in",exp:"'In a hurry' — fixed idiom meaning rushed."},
+  {cat:"Idiomatic",text:"She arrived ___ time for the ceremony.",opts:["in","on","at","by"],ans:"in",exp:"'In time' means with enough time to spare. 'On time' means punctually."},
+  {cat:"Idiomatic",text:"They are ___ good terms with their neighbours.",opts:["on","in","at","with"],ans:"on",exp:"'On good terms' — fixed idiom for a positive relationship."},
+  {cat:"Idiomatic",text:"He is ___ debt.",opts:["in","on","at","into"],ans:"in",exp:"'In debt' — fixed phrase meaning owing money."},
+  {cat:"Idiomatic",text:"She is ___ the phone right now.",opts:["on","at","in","by"],ans:"on",exp:"'On the phone' — fixed idiom for being engaged in a phone call."},
+  {cat:"Idiomatic",text:"He came ___ a fantastic idea.",opts:["up with","across","to","on"],ans:"up with",exp:"'Come up with an idea' — a phrasal verb meaning to think of something."},
+  {cat:"Idiomatic",text:"She is ___ her way to the airport.",opts:["on","in","at","by"],ans:"on",exp:"'On her way' — fixed idiom meaning currently travelling toward a destination."},
+  {cat:"Idiomatic",text:"He acted ___ his own accord.",opts:["of","on","by","at"],ans:"of",exp:"'Of his own accord' — fixed idiom meaning voluntarily, without being asked."},
+  {cat:"Idiomatic",text:"The decision is ___ your hands now.",opts:["in","on","at","with"],ans:"in",exp:"'In your hands' — idiom meaning it is your responsibility."},
+  {cat:"Idiomatic",text:"She burst ___ tears when she heard the news.",opts:["into","in","out of","with"],ans:"into",exp:"'Burst into tears' — fixed idiom meaning to start crying suddenly."},
+  {cat:"Idiomatic",text:"He took the day off ___ holiday.",opts:["on","for","in","as"],ans:"on",exp:"'On holiday' is the British English fixed idiom."},
+  {cat:"Idiomatic",text:"The matter is ___ dispute.",opts:["in","on","under","at"],ans:"in",exp:"'In dispute' — fixed phrase meaning being debated or contested."},
+  {cat:"Idiomatic",text:"She did it ___ purpose.",opts:["on","with","by","for"],ans:"on",exp:"'On purpose' — fixed idiom meaning deliberately."},
+  {cat:"Idiomatic",text:"He spoke ___ behalf of the committee.",opts:["on","in","at","for"],ans:"on",exp:"'On behalf of' — fixed phrase meaning representing someone."},
+  {cat:"Idiomatic",text:"The results are ___ average.",opts:["above","over","higher than","beyond"],ans:"above",exp:"'Above average' is the fixed comparative phrase."},
+  {cat:"Idiomatic",text:"She is ___ a good mood today.",opts:["in","on","at","with"],ans:"in",exp:"'In a good mood' — moods use 'in'."},
+  {cat:"Idiomatic",text:"He has a lot ___ common with his sister.",opts:["in","on","at","with"],ans:"in",exp:"'In common' — fixed idiom meaning shared characteristics."},
+  {cat:"Idiomatic",text:"She is ___ fire!",opts:["on","in","at","with"],ans:"on",exp:"'On fire' — literally burning, or idiomatically meaning performing brilliantly."},
+  {cat:"Idiomatic",text:"Put the kettle ___ .",opts:["on","at","in","up"],ans:"on",exp:"'Put on' — to place on a heat source. 'Put the kettle on' is a fixed expression."},
+  {cat:"Idiomatic",text:"They are ___ strike.",opts:["on","in","at","for"],ans:"on",exp:"'On strike' — fixed idiom for workers refusing to work as a protest."},
+  {cat:"Idiomatic",text:"The project is still ___ progress.",opts:["in","on","at","under"],ans:"in",exp:"'In progress' — fixed phrase meaning currently happening or being done."},
+  {cat:"Idiomatic",text:"She was ___ a bad mood all day.",opts:["in","on","at","with"],ans:"in",exp:"'In a bad mood' — emotional states use 'in a … mood'."},
+  {cat:"Idiomatic",text:"He gave a speech ___ memory of his friend.",opts:["in","on","at","for"],ans:"in",exp:"'In memory of' — fixed phrase used for commemorating someone."},
+  {cat:"Idiomatic",text:"She is ___ the edge of her seat.",opts:["on","at","in","by"],ans:"on",exp:"'On the edge of one's seat' — idiom meaning extremely excited or nervous."},
+  {cat:"Idiomatic",text:"He fell ___ the trap set by his rivals.",opts:["into","in","for","to"],ans:"into",exp:"'Fell into a trap' — 'into' shows entering a situation (often a bad one)."},
+  {cat:"Idiomatic",text:"___ second thought, I'd prefer tea.",opts:["On","In","At","With"],ans:"On",exp:"'On second thought' — fixed idiom meaning after reconsidering."},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let selectedCount = 0;
+let activeQuestions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+
+// ── INTRO ──────────────────────────────────────────────────────────────────
+function selectCount(n) {
+  selectedCount = n;
+  document.querySelectorAll('.count-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('[data-n="' + n + '"]').classList.add('selected');
+  const btn = document.getElementById('start-btn');
+  btn.disabled = false;
+  btn.textContent = 'Start ' + n + '-question quiz →';
+}
+
+// ── QUIZ LOGIC ─────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  const pool = shuffle(ALL_QUESTIONS).slice(0, selectedCount);
+  activeQuestions = pool;
+  current = 0;
+  score = 0;
+  answered = false;
+
+  document.getElementById('intro').style.display = 'none';
+  const quizEl = document.getElementById('quiz');
+  quizEl.style.display = 'block';
+  quizEl.style.animation = 'none';
+  void quizEl.offsetWidth;
+  quizEl.style.animation = 'fadeUp 0.4s ease both';
+
+  document.getElementById('q-tot').textContent = selectedCount;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = activeQuestions[current];
+  document.getElementById('q-cur').textContent = current + 1;
+  document.getElementById('score-badge').textContent = 'Score: ' + score;
+  document.getElementById('cat-badge').textContent = q.cat;
+  document.getElementById('q-text').innerHTML = q.text.replace(/_+/g, "<span class='blank'>___</span>");
+  document.getElementById('progress-fill').style.width = (current / activeQuestions.length * 100) + '%';
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  q.opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(opt);
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('feedback-box').innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+  answered = false;
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = activeQuestions[current];
+  const correct = chosen === q.ans;
+  if (correct) score++;
+
+  document.querySelectorAll('.opt-btn').forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === q.ans) btn.classList.add('correct');
+    else if (btn.textContent === chosen && !correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = correct
+    ? '<strong>✓ Correct!</strong> ' + q.exp
+    : '<strong>✗ Not quite.</strong> The answer is <strong>' + q.ans + '</strong>. ' + q.exp;
+
+  document.getElementById('score-badge').textContent = 'Score: ' + score;
+  const nb = document.getElementById('next-btn');
+  nb.style.display = 'block';
+  nb.textContent = current + 1 < activeQuestions.length ? 'Next question →' : 'See my results →';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= activeQuestions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const total = activeQuestions.length;
+  const wrong = total - score;
+  const pct = Math.round(score / total * 100);
+
+  document.getElementById('r-score').textContent = score;
+  document.getElementById('r-denom').textContent = '/ ' + total;
+  document.getElementById('r-correct').textContent = score;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-pct').textContent = pct + '%';
+
+  let title, sub;
+  if (pct === 100) { title = 'Perfect score!'; sub = 'Flawless — every single answer correct. You have mastered English prepositions.'; }
+  else if (pct >= 80) { title = 'Excellent work!'; sub = 'Strong performance. You have a very solid command of prepositions — review the few you missed.'; }
+  else if (pct >= 60) { title = 'Good effort!'; sub = 'A solid base. Keep practising time, place, and idiomatic prepositions to get even sharper.'; }
+  else if (pct >= 40) { title = 'Keep going!'; sub = 'You are building your skills. Read each explanation carefully and try again.'; }
+  else { title = 'Room to grow!'; sub = 'Prepositions are tricky — keep at it. Read the explanations and try a shorter quiz first.'; }
+
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-sub').textContent = sub;
+
+  const resultEl = document.getElementById('result');
+  resultEl.style.display = 'block';
+  resultEl.style.animation = 'none';
+  void resultEl.offsetWidth;
+  resultEl.style.animation = 'fadeUp 0.5s ease both';
+
+  document.getElementById('progress-fill').style.width = '100%';
+}
+
+function restartQuiz() {
+  document.getElementById('result').style.display = 'none';
+  startQuiz();
+}
+
+function goHome() {
+  document.getElementById('result').style.display = 'none';
+  const introEl = document.getElementById('intro');
+  introEl.style.display = 'block';
+  introEl.style.animation = 'none';
+  void introEl.offsetWidth;
+  introEl.style.animation = 'fadeUp 0.5s ease both';
+}
+</script>
+</body>
+</html>
